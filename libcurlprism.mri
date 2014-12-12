@@ -1,0 +1,6 @@
+create libcurlprism.a
+addlib /home/vagrant/edge/3rdParty/openssl/build/isd/lib/libssl.a
+addlib /home/vagrant/edge/3rdParty/openssl/build/isd/lib/libcrypto.a
+addlib /home/vagrant/curl/lib/libcurl.a
+save
+end
