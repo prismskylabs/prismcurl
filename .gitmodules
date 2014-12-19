@@ -1,6 +1,6 @@
 [submodule "3rdParty/OpenSSL"]
 	path = 3rdParty/OpenSSL
-	url = git://github.com/prismskylabs/prismOpenSSL.git
+	url = git@github.com:prismskylabs/prismOpenSSL.git
 [submodule "src"]
 	path = src
 	url = git://github.com/prismskylabs/curl.git
