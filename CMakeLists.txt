@@ -15,16 +15,37 @@ endif()
 #
 # OpenSSL
 #
-add_subdirectory(3rdParty/OpenSSL)
+if(BUILD_OPENSSL)
+    add_subdirectory(3rdParty/OpenSSL)
+else()
+    set(OPENSSL_ROOT_DIR 
+        ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/OpenSSL/install/${PLATFORM})
+    set(OPENSSL_INCLUDE_DIR  ${OPENSSL_ROOT_DIR}/include CACHE INTERNAL "")
+    set(OPENSSL_LIBRARY_DIR ${OPENSSL_ROOT_DIR}/lib CACHE INTERNAL "")
+        
+    if(WIN32)
+        set(OPENSSL_LIBRARIES 
+            ${OPENSSL_LIBRARY_DIR}/ssleay32.lib 
+            ${OPENSSL_LIBRARY_DIR}/libeay32.lib CACHE INTERNAL "")
+    else()
+        set(OPENSSL_LIBRARIES 
+            ${OPENSSL_LIBRARY_DIR}/libcrypto.a 
+            ${OPENSSL_LIBRARY_DIR}/libssl.a CACHE INTERNAL "")
+    endif()
+endif()
+message("OPENSSL_LIBRARIES " ${OPENSSL_LIBRARIES})
+message("OPENSSL_INCLUDE_DIR " ${OPENSSL_INCLUDE_DIR})
 
 #
 # curl
 #
 
 #Clean the platform install directory every time
-set(CLEAN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install/${PLATFORM})
-MESSAGE("DELETE " ${CLEAN_DIR})
-file(REMOVE_RECURSE ${CLEAN_DIR})
+if(CLEAN)
+    set(CLEAN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/install/${PLATFORM})
+    MESSAGE("DELETE " ${CLEAN_DIR})
+    file(REMOVE_RECURSE ${CLEAN_DIR})
+endif()
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/install/${PLATFORM} CACHE INTERNAL "")
 
