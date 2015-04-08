@@ -1,4 +1,3 @@
-/* include/curl/curlbuild.h.  Generated from curlbuild.h.in by configure.  */
 #ifndef __CURL_CURLBUILD_H
 #define __CURL_CURLBUILD_H
 /***************************************************************************
@@ -8,7 +7,7 @@
  *                            | (__| |_| |  _ <| |___
  *                             \___|\___/|_| \_\_____|
  *
- * Copyright (C) 1998 - 2012, Daniel Stenberg, <daniel@haxx.se>, et al.
+ * Copyright (C) 1998 - 2008, Daniel Stenberg, <daniel@haxx.se>, et al.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution. The terms
@@ -126,35 +125,35 @@
 
 /* Configure process defines this to 1 when it finds out that system   */
 /* header file sys/types.h must be included by the external interface. */
-#define CURL_PULL_SYS_TYPES_H 1
+#define CURL_PULL_SYS_TYPES_H
 #ifdef CURL_PULL_SYS_TYPES_H
 #  include <sys/types.h>
 #endif
 
 /* Configure process defines this to 1 when it finds out that system */
 /* header file stdint.h must be included by the external interface.  */
-#define CURL_PULL_STDINT_H 1
+#define CURL_PULL_STDINT_H
 #ifdef CURL_PULL_STDINT_H
 #  include <stdint.h>
 #endif
 
 /* Configure process defines this to 1 when it finds out that system  */
 /* header file inttypes.h must be included by the external interface. */
-#define CURL_PULL_INTTYPES_H 1
+#define CURL_PULL_INTTYPES_H
 #ifdef CURL_PULL_INTTYPES_H
 #  include <inttypes.h>
 #endif
 
 /* Configure process defines this to 1 when it finds out that system    */
 /* header file sys/socket.h must be included by the external interface. */
-#define CURL_PULL_SYS_SOCKET_H 1
+#define CURL_PULL_SYS_SOCKET_H
 #ifdef CURL_PULL_SYS_SOCKET_H
 #  include <sys/socket.h>
 #endif
 
 /* Configure process defines this to 1 when it finds out that system  */
 /* header file sys/poll.h must be included by the external interface. */
-/* #undef CURL_PULL_SYS_POLL_H */
+#define CURL_PULL_SYS_POLL_H
 #ifdef CURL_PULL_SYS_POLL_H
 #  include <sys/poll.h>
 #endif
@@ -172,7 +171,7 @@
 typedef CURL_TYPEOF_CURL_SOCKLEN_T curl_socklen_t;
 
 /* Signed integral data type used for curl_off_t. */
-#define CURL_TYPEOF_CURL_OFF_T int64_t
+#define CURL_TYPEOF_CURL_OFF_T long long
 
 /* Data type definition of curl_off_t. */
 typedef CURL_TYPEOF_CURL_OFF_T curl_off_t;
