@@ -23,17 +23,17 @@
 # This should most probably benefit from getting a "Requires:" field added
 # dynamically by configure.
 #
-prefix=/home/vagrant/curl
+prefix=/home/vagrant/edge/3rdParty/prismcurl/install/isd
 exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
+libdir=/home/vagrant/edge/3rdParty/prismcurl/install/isd/lib
 includedir=${prefix}/include
-supported_protocols="DICT FILE FTP FTPS GOPHER HTTP HTTPS IMAP IMAPS POP3 POP3S RTSP SMTP SMTPS TELNET TFTP"
-supported_features="SSL NTLM NTLM_WB TLS-SRP"
+supported_protocols="HTTP"
+supported_features="IPv6 unix-sockets"
 
 Name: libcurl
 URL: http://curl.haxx.se/
 Description: Library to transfer files with ftp, http, etc.
-Version: 7.39.0
+Version: 7.41.0-DEV
 Libs: -L${libdir} -lcurl
-Libs.private: -lssl -lcrypto -lrt
-Cflags: -I${includedir} -DCURL_STATICLIB
+Libs.private:  -lc -ldl
+Cflags: -I${includedir} 
