@@ -5,7 +5,7 @@
 .\" *                            | (__| |_| |  _ <| |___
 .\" *                             \___|\___/|_| \_\_____|
 .\" *
-.\" * Copyright (C) 1998 - 2014, Daniel Stenberg, <daniel@haxx.se>, et al.
+.\" * Copyright (C) 1998 - 2015, Daniel Stenberg, <daniel@haxx.se>, et al.
 .\" *
 .\" * This software is licensed as described in the file COPYING, which
 .\" * you should have received as part of this distribution. The terms
@@ -20,28 +20,34 @@
 .\" *
 .\" **************************************************************************
 .\"
-.TH CURLOPT_CRLF 3 "17 Jun 2014" "libcurl 7.37.0" "curl_easy_setopt options"
+.TH CURLOPT_SSL_VERIFYSTATUS 3 "04 Dec 2014" "libcurl 7.40.0" "curl_easy_setopt options"
 .SH NAME
-CURLOPT_CRLF \- enable/disable CRLF conversion
+CURLOPT_SSL_VERIFYSTATUS \- verify the certificate's status
 .SH SYNOPSIS
 #include <curl/curl.h>
 
-CURLcode curl_easy_setopt(CURL *handle, CURLOPT_CRLF, long conv);
+CURLcode curl_easy_setopt(CURL *handle, CURLOPT_SSL_VERIFYSTATUS, long verify);
 .SH DESCRIPTION
-Pass a long. If the value is set to 1 (one), libcurl converts Unix newlines to
-CRLF newlines on transfers. Disable this option again by setting the value to
-0 (zero).
+Pass a long as parameter set to 1 to enable or 0 to disable.
 
-This is a legacy option of questionable use.
+This option determines whether libcurl verifies the status of the server cert
+using the "Certificate Status Request" TLS extension (aka. OCSP stapling).
+
+Note that if this option is enabled but the server does not support the TLS
+extension, the verification will fail.
 .SH DEFAULT
 0
 .SH PROTOCOLS
-All
+All TLS based protocols: HTTPS, FTPS, IMAPS, POP3, SMTPS etc.
 .SH EXAMPLE
 TODO
 .SH AVAILABILITY
-SMTP since 7.40.0, other protocols since they were introduced
+Added in 7.41.0. This option is currently only supported by the OpenSSL, GnuTLS
+and NSS TLS backends.
 .SH RETURN VALUE
-Returns CURLE_OK
+Returns CURLE_OK if OCSP stapling is supported by the SSL backend, otherwise
+returns CURLE_NOT_BUILT_IN.
 .SH "SEE ALSO"
-.BR CURLOPT_CONV_FROM_NETWORK_FUNCTION "(3), " CURLOPT_CONV_TO_NETWORK_FUNCTION "(3), "
+.BR CURLOPT_SSL_VERIFYHOST "(3), "
+.BR CURLOPT_SSL_VERIFYPEER "(3), "
+.BR CURLOPT_CAINFO "(3), "
