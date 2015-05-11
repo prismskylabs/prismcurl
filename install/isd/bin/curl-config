@@ -21,10 +21,10 @@
 #
 ###########################################################################
 
-prefix=/home/vagrant/edge/3rdParty/prismcurl/install/isd
+prefix=/home/vagrant/curlll/prismcurl/src/build
 exec_prefix=${prefix}
 includedir=${prefix}/include
-cppflag_curl_staticlib=
+cppflag_curl_staticlib=-DCURL_STATICLIB
 
 usage()
 {
@@ -67,7 +67,7 @@ while test $# -gt 0; do
 
     case "$1" in
     --built-shared)
-        echo yes
+        echo no
         ;;
 
     --ca)
@@ -75,7 +75,7 @@ while test $# -gt 0; do
         ;;
 
     --cc)
-        echo "/opt/gcc-linaro-arm-linux-gnueabihf/bin/arm-linux-gnueabihf-gcc"
+        echo "arm-linux-gnueabihf-gcc"
         ;;
 
     --prefix)
@@ -83,13 +83,13 @@ while test $# -gt 0; do
         ;;
 
     --feature|--features)
-        for feature in IPv6 unix-sockets ""; do
+        for feature in SSL UnixSockets NTLM NTLM_WB TLS-SRP ""; do
             test -n "$feature" && echo "$feature"
         done
         ;;
 
     --protocols)
-        for protocol in HTTP; do
+        for protocol in DICT FILE FTP FTPS GOPHER HTTP HTTPS IMAP IMAPS POP3 POP3S RTSP SMB SMBS SMTP SMTPS TELNET TFTP; do
             echo "$protocol"
         done
         ;;
@@ -142,21 +142,21 @@ while test $# -gt 0; do
         ;;
 
     --libs)
-        if test "X/home/vagrant/edge/3rdParty/prismcurl/install/isd/lib" != "X/usr/lib" -a "X/home/vagrant/edge/3rdParty/prismcurl/install/isd/lib" != "X/usr/lib64"; then
-           CURLLIBDIR="-L/home/vagrant/edge/3rdParty/prismcurl/install/isd/lib "
+        if test "X${exec_prefix}/lib" != "X/usr/lib" -a "X${exec_prefix}/lib" != "X/usr/lib64"; then
+           CURLLIBDIR="-L${exec_prefix}/lib "
         else
            CURLLIBDIR=""
         fi
-        if test "Xno" = "Xyes"; then
-          echo ${CURLLIBDIR}-lcurl  -lc -ldl
+        if test "Xyes" = "Xyes"; then
+          echo ${CURLLIBDIR}-lcurl -lssl -lcrypto -lrt
         else
           echo ${CURLLIBDIR}-lcurl
         fi
         ;;
 
     --static-libs)
-        if test "Xno" != "Xno" ; then
-          echo /home/vagrant/edge/3rdParty/prismcurl/install/isd/lib/libcurl.a    -lc -ldl
+        if test "Xyes" != "Xno" ; then
+          echo ${exec_prefix}/lib/libcurl.a -z muldefs -L/home/vagrant/edge/3rdParty/prismcurl/3rdParty/OpenSSL/install/isd/lib -L/opt/gcc-linaro-arm-linux-gnueabihf/lib -L/opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/lib -Wl,-rpath-link=/opt/gcc-linaro-arm-linux-gnueabihf/lib:/opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/lib -lrt -lssl -lcrypto -lrt
         else
           echo "curl was built with static libraries disabled" >&2
           exit 1
@@ -164,7 +164,7 @@ while test $# -gt 0; do
         ;;
 
     --configure)
-        echo 
+        echo " '--prefix=/home/vagrant/curlll/prismcurl/src/build' '--target=arm-linux-gnueabihf' '--host=arm-linux-gnueabihf' '--build=i686-pc-linux-gnu' '--with-ssl' '--disable-shared' '--enable-libcurl-option' '--enable-static' 'build_alias=i686-pc-linux-gnu' 'host_alias=arm-linux-gnueabihf' 'target_alias=arm-linux-gnueabihf' 'CC=arm-linux-gnueabihf-gcc' 'CFLAGS=-isystem /opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/include -mfloat-abi=hard -mfpu=neon -mcpu=cortex-a9' 'LDFLAGS=-z muldefs -L/home/vagrant/edge/3rdParty/prismcurl/3rdParty/OpenSSL/install/isd/lib -L/opt/gcc-linaro-arm-linux-gnueabihf/lib -L/opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/lib -Wl,-rpath-link=/opt/gcc-linaro-arm-linux-gnueabihf/lib:/opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/lib -lrt' 'LIBS=-lrt' 'CPPFLAGS=-I/home/vagrant/edge/3rdParty/prismcurl/3rdParty/OpenSSL/install/isd/include -isystem /opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/include -mfloat-abi=hard -mfpu=neon -mcpu=cortex-a9'"
         ;;
 
     *)
