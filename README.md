@@ -10,7 +10,20 @@ Using the Binaries
 ------------------
 Binaries and platform specific files are located under the build/<platform> directories. For insantce, if you wanted to build against this submodule for windows, you would add build/windows/include to your include path and build/windows/lib to your library path.
 
-Adding Another Platform
+Build with cmake
+----------------
+The prismcurl/CMakeLists.txt will build for win, osx, linux and isd. The istall command will put curl in the prismcurl/install/<platform> directory.
+
+cd edge/3rdparty/prismcurl
+mkdir build
+cd build
+cmake ..
+make -j8
+cp src/libcurl.pc .
+cp src/curl-config .
+cmake -P cmake_install.cmake
+
+Using Configure (deprecated)
 -----------------------
 If you wish to add another platform simply use the configure script in the source directory to configure CURL for your target platform with the prefix pointing to build/<platform>. Once everything is configured to your satisfaction just make and make install and everything should show up in build/<platform> as expected. If you need to cross-compile, things get a bit tricky, for example, this is what is required in order to build for ISD:
 <pre><code>cd src
