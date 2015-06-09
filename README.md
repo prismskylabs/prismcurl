@@ -13,7 +13,7 @@ Binaries and platform specific files are located under the build/<platform> dire
 Build with cmake
 ----------------
 The prismcurl/CMakeLists.txt will build for win, osx, linux and isd. The istall command will put curl in the prismcurl/install/<platform> directory.
-
+<pre><code>
 cd edge/3rdparty/prismcurl
 mkdir build
 cd build
@@ -22,6 +22,7 @@ make -j8
 cp src/libcurl.pc .
 cp src/curl-config .
 cmake -P cmake_install.cmake
+</code></pre>
 
 Using Configure (deprecated)
 -----------------------
