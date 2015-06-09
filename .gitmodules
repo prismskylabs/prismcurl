@@ -3,4 +3,4 @@
 	url = git@github.com:prismskylabs/prismOpenSSL.git
 [submodule "src"]
 	path = src
-	url = git://github.com/prismskylabs/curl.git
+	url = git@github.com:prismskylabs/curl.git
