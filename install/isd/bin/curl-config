@@ -21,10 +21,10 @@
 #
 ###########################################################################
 
-prefix=/home/vagrant/curl
+prefix=/home/prism/prismcurl/install/linux
 exec_prefix=${prefix}
 includedir=${prefix}/include
-cppflag_curl_staticlib=-DCURL_STATICLIB
+cppflag_curl_staticlib=
 
 usage()
 {
@@ -67,15 +67,15 @@ while test $# -gt 0; do
 
     case "$1" in
     --built-shared)
-        echo no
+        echo yes
         ;;
 
     --ca)
-        echo ""
+        echo 
         ;;
 
     --cc)
-        echo "arm-linux-gnueabihf-gcc"
+        echo "/usr/bin/cc"
         ;;
 
     --prefix)
@@ -83,19 +83,19 @@ while test $# -gt 0; do
         ;;
 
     --feature|--features)
-        for feature in SSL NTLM NTLM_WB TLS-SRP ""; do
+        for feature in SSL IPv6 unix-sockets libz NTLM ""; do
             test -n "$feature" && echo "$feature"
         done
         ;;
 
     --protocols)
-        for protocol in DICT FILE FTP FTPS GOPHER HTTP HTTPS IMAP IMAPS POP3 POP3S RTSP SMTP SMTPS TELNET TFTP; do
+        for protocol in HTTP HTTPS; do
             echo "$protocol"
         done
         ;;
 
     --version)
-        echo libcurl 7.39.0
+        echo libcurl 7.42.0-DEV
         exit 0
         ;;
 
@@ -107,20 +107,20 @@ while test $# -gt 0; do
         # dash as that's used for things like version 1.2.3-CVS
         cpatch=`echo $checkfor | cut -d. -f3 | cut -d- -f1`
         checknum=`echo "$cmajor*256*256 + $cminor*256 + ${cpatch:-0}" | bc`
-        numuppercase=`echo 072700 | tr 'a-f' 'A-F'`
+        numuppercase=`echo 072A00 | tr 'a-f' 'A-F'`
         nownum=`echo "obase=10; ibase=16; $numuppercase" | bc`
 
         if test "$nownum" -ge "$checknum"; then
           # silent success
           exit 0
         else
-          echo "requested version $checkfor is newer than existing 7.39.0"
+          echo "requested version $checkfor is newer than existing 7.42.0-DEV"
           exit 1
         fi
         ;;
 
     --vernum)
-        echo 072700
+        echo 072A00
         exit 0
         ;;
 
@@ -142,21 +142,21 @@ while test $# -gt 0; do
         ;;
 
     --libs)
-        if test "X${exec_prefix}/lib" != "X/usr/lib" -a "X${exec_prefix}/lib" != "X/usr/lib64"; then
-           CURLLIBDIR="-L${exec_prefix}/lib "
+        if test "X/home/prism/prismcurl/install/linux/lib" != "X/usr/lib" -a "X/home/prism/prismcurl/install/linux/lib" != "X/usr/lib64"; then
+           CURLLIBDIR="-L/home/prism/prismcurl/install/linux/lib "
         else
            CURLLIBDIR=""
         fi
-        if test "Xyes" = "Xyes"; then
-          echo ${CURLLIBDIR}-lcurl -lssl -lcrypto -lrt
+        if test "Xno" = "Xyes"; then
+          echo ${CURLLIBDIR}-lcurl  -lc -ldl -l/usr/lib/i386-linux-gnu/libssl.so -l/usr/lib/i386-linux-gnu/libcrypto.so -l/usr/lib/i386-linux-gnu/libz.so
         else
           echo ${CURLLIBDIR}-lcurl
         fi
         ;;
 
     --static-libs)
-        if test "Xyes" != "Xno" ; then
-          echo ${exec_prefix}/lib/libcurl.a -z muldefs -L/home/vagrant/edge/3rdParty/openssl/build/isd/lib -L/opt/gcc-linaro-arm-linux-gnueabihf/lib -L/opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/lib -Wl,-rpath-link=/opt/gcc-linaro-arm-linux-gnueabihf/lib:/opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/lib -lrt -lssl -lcrypto -lrt
+        if test "Xno" != "Xno" ; then
+          echo /home/prism/prismcurl/install/linux/lib/libcurl.a    -lc -ldl -l/usr/lib/i386-linux-gnu/libssl.so -l/usr/lib/i386-linux-gnu/libcrypto.so -l/usr/lib/i386-linux-gnu/libz.so
         else
           echo "curl was built with static libraries disabled" >&2
           exit 1
@@ -164,7 +164,7 @@ while test $# -gt 0; do
         ;;
 
     --configure)
-        echo " '--prefix=/home/vagrant/curl' '--target=arm-linux-gnueabihf' '--host=arm-linux-gnueabihf' '--build=i686-pc-linux-gnu' '--with-ssl' '--disable-shared' '--enable-libcurl-option' '--enable-static' 'build_alias=i686-pc-linux-gnu' 'host_alias=arm-linux-gnueabihf' 'target_alias=arm-linux-gnueabihf' 'CC=arm-linux-gnueabihf-gcc' 'CFLAGS=-isystem /opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/include -mfloat-abi=hard -mfpu=neon -mcpu=cortex-a9' 'LDFLAGS=-z muldefs -L/home/vagrant/edge/3rdParty/openssl/build/isd/lib -L/opt/gcc-linaro-arm-linux-gnueabihf/lib -L/opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/lib -Wl,-rpath-link=/opt/gcc-linaro-arm-linux-gnueabihf/lib:/opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/lib -lrt' 'LIBS=-lrt' 'CPPFLAGS=-I/home/vagrant/edge/3rdParty/openssl/build/isd/include -isystem /opt/gcc-linaro-arm-linux-gnueabihf/arm-linux-gnueabihf/include -mfloat-abi=hard -mfpu=neon -mcpu=cortex-a9'"
+        echo 
         ;;
 
     *)
