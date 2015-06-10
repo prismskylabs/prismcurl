@@ -21,7 +21,7 @@
 #
 ###########################################################################
 
-prefix=/home/dlow/edge/3rdParty/prismcurl/install/linux
+prefix=/home/prism/prismcurl/install/linux
 exec_prefix=${prefix}
 includedir=${prefix}/include
 cppflag_curl_staticlib=
@@ -71,7 +71,7 @@ while test $# -gt 0; do
         ;;
 
     --ca)
-        echo ""
+        echo 
         ;;
 
     --cc)
@@ -83,7 +83,7 @@ while test $# -gt 0; do
         ;;
 
     --feature|--features)
-        for feature in SSL IPv6 libz AsynchDNS NTLM ""; do
+        for feature in SSL IPv6 unix-sockets libz NTLM ""; do
             test -n "$feature" && echo "$feature"
         done
         ;;
@@ -95,7 +95,7 @@ while test $# -gt 0; do
         ;;
 
     --version)
-        echo libcurl 7.38.1-DEV
+        echo libcurl 7.42.0-DEV
         exit 0
         ;;
 
@@ -107,20 +107,20 @@ while test $# -gt 0; do
         # dash as that's used for things like version 1.2.3-CVS
         cpatch=`echo $checkfor | cut -d. -f3 | cut -d- -f1`
         checknum=`echo "$cmajor*256*256 + $cminor*256 + ${cpatch:-0}" | bc`
-        numuppercase=`echo 072601 | tr 'a-f' 'A-F'`
+        numuppercase=`echo 072A00 | tr 'a-f' 'A-F'`
         nownum=`echo "obase=10; ibase=16; $numuppercase" | bc`
 
         if test "$nownum" -ge "$checknum"; then
           # silent success
           exit 0
         else
-          echo "requested version $checkfor is newer than existing 7.38.1-DEV"
+          echo "requested version $checkfor is newer than existing 7.42.0-DEV"
           exit 1
         fi
         ;;
 
     --vernum)
-        echo 072601
+        echo 072A00
         exit 0
         ;;
 
@@ -142,8 +142,8 @@ while test $# -gt 0; do
         ;;
 
     --libs)
-        if test "X/home/dlow/edge/3rdParty/prismcurl/install/linux/lib" != "X/usr/lib" -a "X/home/dlow/edge/3rdParty/prismcurl/install/linux/lib" != "X/usr/lib64"; then
-           CURLLIBDIR="-L/home/dlow/edge/3rdParty/prismcurl/install/linux/lib "
+        if test "X/home/prism/prismcurl/install/linux/lib" != "X/usr/lib" -a "X/home/prism/prismcurl/install/linux/lib" != "X/usr/lib64"; then
+           CURLLIBDIR="-L/home/prism/prismcurl/install/linux/lib "
         else
            CURLLIBDIR=""
         fi
@@ -156,7 +156,7 @@ while test $# -gt 0; do
 
     --static-libs)
         if test "Xno" != "Xno" ; then
-          echo /home/dlow/edge/3rdParty/prismcurl/install/linux/lib/libcurl.a    -lc -ldl -l/usr/lib/i386-linux-gnu/libssl.so -l/usr/lib/i386-linux-gnu/libcrypto.so -l/usr/lib/i386-linux-gnu/libz.so
+          echo /home/prism/prismcurl/install/linux/lib/libcurl.a    -lc -ldl -l/usr/lib/i386-linux-gnu/libssl.so -l/usr/lib/i386-linux-gnu/libcrypto.so -l/usr/lib/i386-linux-gnu/libz.so
         else
           echo "curl was built with static libraries disabled" >&2
           exit 1
