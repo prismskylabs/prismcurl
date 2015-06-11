@@ -21,10 +21,10 @@
 #
 ###########################################################################
 
-prefix=/home/prism/prismcurl/install/linux
+prefix=/home/prism/prismcurl/build
 exec_prefix=${prefix}
 includedir=${prefix}/include
-cppflag_curl_staticlib=
+cppflag_curl_staticlib=-DCURL_STATICLIB
 
 usage()
 {
@@ -67,15 +67,15 @@ while test $# -gt 0; do
 
     case "$1" in
     --built-shared)
-        echo yes
+        echo no
         ;;
 
     --ca)
-        echo 
+        echo "/etc/ssl/certs/ca-certificates.crt"
         ;;
 
     --cc)
-        echo "/usr/bin/cc"
+        echo "gcc"
         ;;
 
     --prefix)
@@ -83,13 +83,13 @@ while test $# -gt 0; do
         ;;
 
     --feature|--features)
-        for feature in SSL IPv6 unix-sockets libz NTLM ""; do
+        for feature in SSL IPv6 UnixSockets libz NTLM NTLM_WB TLS-SRP ""; do
             test -n "$feature" && echo "$feature"
         done
         ;;
 
     --protocols)
-        for protocol in HTTP HTTPS; do
+        for protocol in DICT FILE FTP FTPS GOPHER HTTP HTTPS IMAP IMAPS POP3 POP3S RTSP SMB SMBS SMTP SMTPS TELNET TFTP; do
             echo "$protocol"
         done
         ;;
@@ -142,21 +142,21 @@ while test $# -gt 0; do
         ;;
 
     --libs)
-        if test "X/home/prism/prismcurl/install/linux/lib" != "X/usr/lib" -a "X/home/prism/prismcurl/install/linux/lib" != "X/usr/lib64"; then
-           CURLLIBDIR="-L/home/prism/prismcurl/install/linux/lib "
+        if test "X${exec_prefix}/lib" != "X/usr/lib" -a "X${exec_prefix}/lib" != "X/usr/lib64"; then
+           CURLLIBDIR="-L${exec_prefix}/lib "
         else
            CURLLIBDIR=""
         fi
-        if test "Xno" = "Xyes"; then
-          echo ${CURLLIBDIR}-lcurl  -lc -ldl -l/usr/lib/i386-linux-gnu/libssl.so -l/usr/lib/i386-linux-gnu/libcrypto.so -l/usr/lib/i386-linux-gnu/libz.so
+        if test "Xyes" = "Xyes"; then
+          echo ${CURLLIBDIR}-lcurl -lssl -lcrypto -lssl -lcrypto -lz -lrt
         else
           echo ${CURLLIBDIR}-lcurl
         fi
         ;;
 
     --static-libs)
-        if test "Xno" != "Xno" ; then
-          echo /home/prism/prismcurl/install/linux/lib/libcurl.a    -lc -ldl -l/usr/lib/i386-linux-gnu/libssl.so -l/usr/lib/i386-linux-gnu/libcrypto.so -l/usr/lib/i386-linux-gnu/libz.so
+        if test "Xyes" != "Xno" ; then
+          echo ${exec_prefix}/lib/libcurl.a -z muldefs -L/home/prism/prismcurl/3rdParty/OpenSSL/build/lib -lrt -L/home/prism/prismcurl/3rdParty/OpenSSL/build/lib -lssl -lcrypto -lssl -lcrypto -lz -lrt
         else
           echo "curl was built with static libraries disabled" >&2
           exit 1
@@ -164,7 +164,7 @@ while test $# -gt 0; do
         ;;
 
     --configure)
-        echo 
+        echo " '--prefix=/home/prism/prismcurl/build' '--with-ssl=/home/prism/prismcurl/3rdParty/OpenSSL/build' '--with-libssl-prefix=/home/prism/prismcurl/3rdParty/OpenSSL/build' '--disable-shared' '--enable-libcurl-option' '--enable-static' 'CFLAGS=-I/home/prism/prismcurl/3rdParty/OpenSSL/build/include' 'LDFLAGS=-z muldefs -L/home/prism/prismcurl/3rdParty/OpenSSL/build/lib -lrt' 'CPPFLAGS=-I/home/prism/prismcurl/3rdParty/OpenSSL/build/include'"
         ;;
 
     *)
